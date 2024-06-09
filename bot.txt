@@ -1,0 +1,123 @@
+	BD
+
+1) user
+user_id (int), tg_user_id (int), username (text), current_round_num (int, foreign_key to stats.stats_id)
+
+2) questions
+questions_id (int), category (text [A/B/AB]), text (text), description (text)
+
+3) answers
+answers_id (int), questions_id (int, foreign_key to questions.id), text (text), is_right (INTEGER [0/1])
+
+4) stats
+stats_id (int), tg_user_id (int, foreign_key to user.tg_user_id), round_type (text), round_num (int), correct_count (int), mistakes_count (int)
+
+5) mistakes_questions
+mistakes_questions_id (int), tg_user_id (int, foreign_key to user.tg_user_id), questions_id (int, foreign_key to questions.id)
+
+
+	Buttons
+- menu
+Start exam
+Start training (all 864)
+Start work on mistakes
+Statistics
+
+- round
+Stop round
+
+
+	Gameplay
+
+1) /start (new user)
+- message, menu
+
+2) Start exam
+- get 30 questions
+- round step
+
+3) Start marathon
+- shuffle nums 1..864 
+- round step
+
+4) Start work on mistakes
+- get questions_id from mistakes_questions by user_id
+- round step
+
+5) Statistics
+- get all stats_id from stats by user_id group by round_type 
+  Print correct_count / sum(all) * 100% and mistakes_count / sum(all) * 100%
+
+
+	Plan
+1) develop parser (category A + B)
+2) develop all in python (with Git)
+3) change SQLite to MySQL/PostgreSQL
+4) run on remote server
+5) write tests (unit)
+6) rewrite bot on Go (another branch)
+
+
+	Structure
+1) parser.py
+2) repository.py
+3) bot.py
+4) requirements.txt
+5) README.md
+6) .gitignore
+7) secrets.py
+
+
+	Queries
+
+
+
+	Methods
+
+
+
+	Parser
+1) question_text - add to text in questions
+2) answers - one by one add to text in answers using question_id from questions
+3) index_right_answer - add (1 if true else 0) to is_right in answers
+4) descrition - add to description in questions
+5) image (if exists) - make file_name using question_id from questions
+
+6) category - using dict category {"question": "category"} - first parse: category = A, second parse: if question B in category: category = A/B, else category = B
+
+	Parser_methods
+1) add_question(question_text, category, description)
+2) get_question_id()
+3) add_answers(question_id, answers: list of answer_text, index_right_answer)
+4) create_img_name(question_id)
+5) update_category(question_id, new_category)
+
+
+
+	Bot
+1) menu - "hi" message + 4 buttons:
+    {start exam,
+    start marathon,
+    start work on mistakes,
+    get statistics}
+send message
+function send_general_menu
+
+2) exam:
+    choose category (A or B),
+    get 30 random digits from 1 to len(table 'questions') according to category,
+    start round step
+choose category - 2 buttons: "A" and "B", according to answer set category variable
+get 30 random digits - get all question_id where category is right, add 30 random ids to list
+round step - get question_id from random generated list,
+if exists image - send image,
+send text,
+get all answers from table answers using question_id, shuffle list, send answers,
+send keyboard with indexes marked right or not
+handle game type callback
+
+
+
+
+
+

@@ -4,6 +4,9 @@ from bs4 import BeautifulSoup
 import lxml
 import re
 import translators as ts
+import config
+
+USER_AGENT = config.user_agent
 
 db = sqlite3.connect('teoria.db')
 
@@ -39,7 +42,7 @@ def add_answers(db, table, question_id, answers, index_right_answer):
 
 def parse(db, url, category, pages):
     user_agent = {
-        'User-Agent': 'YOUR_USER_AGENT'}
+        'User-Agent': USER_AGENT}
     cookies = {
         'exam-settings': '%7B%22category%22%3A1%2C%22locale%22%3A%22ru%22%2C%22skin%22%3A%22dark%22%2C%22user%22%3A0%2C%22created%22%3A1716899742%2C%22questions%22%3A30%2C%22challenge%22%3Atrue%2C%22all_questions%22%3Afalse%2C%22topics%22%3A%5B%221%22%2C%222%22%2C%223%22%2C%224%22%2C%225%22%2C%226%22%2C%227%22%2C%228%22%2C%229%22%2C%2210%22%2C%2211%22%2C%2212%22%2C%2213%22%2C%2214%22%2C%2215%22%2C%2216%22%2C%2217%22%2C%2218%22%2C%2219%22%2C%2220%22%2C%2221%22%2C%2222%22%2C%2223%22%2C%2224%22%2C%2225%22%2C%2226%22%2C%2227%22%2C%2228%22%2C%2229%22%2C%2230%22%2C%2231%22%2C%2232%22%5D%2C%22autoShowCorrect%22%3Atrue%2C%22autoNextStep%22%3Afalse%7D'
     }

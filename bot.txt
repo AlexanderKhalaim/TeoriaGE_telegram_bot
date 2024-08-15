@@ -116,6 +116,26 @@ get all answers from table answers using question_id, shuffle list, send answers
 send keyboard with indexes marked right or not
 handle game type callback
 
+1. Подумать над оптимизацией обращений к БД и возможности хранения определенных данных в памяти
+3. Реализовать структуру кэширования частых запросов к БД
+    ЧТО Я ВЫТАСКИВАЮ:
+    1. fetch_stat_id_by_tg_user_id (1 use) - вытаскиваю текущий stat_id для пользователя чтобы установить его в users
+    2. fetch_current_round_id_from_users_by_tg_user_id (5 uses) - вытаскиваю stat_id, чтобы дальше использовать
+    3. fetch_list_of_question_ids_from_stats_by_stat_id (2 uses, every round) - получаю строку question_ids
+    4. fetch_round_num_from_stats_by_stat_id (1 use) - получаю номер текущего раунда для нумерации вопроса
+    5. fetch_round_type_from_stats_by_stat_id (1 use) - получаю тип игры, использую при обработке коллбека
+    6. fetch_correct_and_mistake_from_stats_by_stat_id (1 use) - использую в end_of_game
+
+4. Реализовать структуру для хранения в памяти счетчиков корректных ответов и ошибок
+
+инфа о текущем раунде пользователя:
+    1. stat_id
+    2. category (if exists)
+    3. round_type
+    4. round_num
+    5. correct_cnt
+    6. mistake_cnt
+    7. list_of_questions
 
 
 

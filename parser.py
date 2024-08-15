@@ -5,10 +5,10 @@ import lxml
 import re
 import translators as ts
 import config
+import respository
+
 
 USER_AGENT = config.user_agent
-
-db = sqlite3.connect('teoria.db')
 
 
 def add_question_info(db, table, question_text, category, description):
@@ -91,6 +91,7 @@ def parse(db, url, category, pages):
             print(f'Request failed with status code: {response.status_code}')
 
 
+db = respository.connection()
 parse(db, 'https://teoria.on.ge/tickets/1?page=', 'A', 45)
 parse(db, 'https://teoria.on.ge/tickets/2?page=', 'B', 56)
 

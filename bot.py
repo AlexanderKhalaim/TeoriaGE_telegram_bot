@@ -3,8 +3,9 @@ from telebot import types
 import sqlite3
 import random
 import os
+import config
 
-API = 'YOUR_TELEGRAM_TOKEN'
+API = config.api
 bot = telebot.TeleBot(API)
 
 
